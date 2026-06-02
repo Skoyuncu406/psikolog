@@ -1,12 +1,18 @@
 @import "tailwindcss";
 
+* {
+  box-sizing: border-box;
+}
+
 html {
   scroll-behavior: smooth;
+    overflow-x: hidden;
 }
 
 body {
   background: #f7f5ef;
   color: #1f332b;
+    overflow-x: hidden;
 }
 
 ::selection {
