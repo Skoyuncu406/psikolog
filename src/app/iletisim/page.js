@@ -148,10 +148,10 @@ export default function IletisimPage() {
         </div>
       </section>
 
-      <section className="pb-20">
-        <div className="max-w-7xl mx-auto px-5 lg:px-8 grid lg:grid-cols-2 gap-8 items-start">
-          <div className="bg-white rounded-[2rem] p-8 shadow-sm border border-[#ebe4d6]">
-            <h2 className="text-3xl font-serif font-bold text-[#1f332b] mb-2">
+      <section className="pb-20 overflow-x-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-5 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-8 items-start min-w-0">
+          <div className="bg-white rounded-[2rem] p-5 sm:p-8 shadow-sm border border-[#ebe4d6] min-w-0">
+            <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#1f332b] mb-2">
               İletişim Formu
             </h2>
 
@@ -168,7 +168,7 @@ export default function IletisimPage() {
                 value={form.name}
                 onChange={handleChange}
                 placeholder="İsim Soyisim"
-                className="w-full px-4 py-4 rounded-2xl border border-[#d8d1bf] outline-none focus:border-[#1f5f4b] bg-[#f7f5ef]"
+                className="w-full min-w-0 px-4 py-4 rounded-2xl border border-[#d8d1bf] outline-none focus:border-[#1f5f4b] bg-[#f7f5ef]"
               />
 
               <input
@@ -178,7 +178,7 @@ export default function IletisimPage() {
                 value={form.phone}
                 onChange={handleChange}
                 placeholder="Telefon Numarası"
-                className="w-full px-4 py-4 rounded-2xl border border-[#d8d1bf] outline-none focus:border-[#1f5f4b] bg-[#f7f5ef]"
+                className="w-full min-w-0 px-4 py-4 rounded-2xl border border-[#d8d1bf] outline-none focus:border-[#1f5f4b] bg-[#f7f5ef]"
               />
 
               <input
@@ -188,7 +188,7 @@ export default function IletisimPage() {
                 value={form.subject}
                 onChange={handleChange}
                 placeholder="Konu"
-                className="w-full px-4 py-4 rounded-2xl border border-[#d8d1bf] outline-none focus:border-[#1f5f4b] bg-[#f7f5ef]"
+                className="w-full min-w-0 px-4 py-4 rounded-2xl border border-[#d8d1bf] outline-none focus:border-[#1f5f4b] bg-[#f7f5ef]"
               />
 
               <textarea
@@ -198,10 +198,10 @@ export default function IletisimPage() {
                 onChange={handleChange}
                 placeholder="Mesajınız"
                 rows="6"
-                className="w-full px-4 py-4 rounded-2xl border border-[#d8d1bf] outline-none focus:border-[#1f5f4b] bg-[#f7f5ef] resize-none"
+                className="w-full min-w-0 px-4 py-4 rounded-2xl border border-[#d8d1bf] outline-none focus:border-[#1f5f4b] bg-[#f7f5ef] resize-none"
               />
 
-              <div className="bg-[#f7f5ef] border border-[#d8d1bf] rounded-2xl p-5">
+              <div className="bg-[#f7f5ef] border border-[#d8d1bf] rounded-2xl p-4 sm:p-5 min-w-0">
                 <label className="block mb-2 text-sm font-semibold text-[#1f332b]">
                   Güvenlik Doğrulaması
                 </label>
@@ -210,8 +210,8 @@ export default function IletisimPage() {
                   Lütfen aşağıdaki işlemin sonucunu yazın:
                 </p>
 
-                <div className="flex items-center gap-4">
-                  <div className="px-5 py-4 rounded-2xl bg-white border border-[#d8d1bf] font-bold text-[#1f332b]">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-4 min-w-0">
+                  <div className="w-full sm:w-auto px-5 py-4 rounded-2xl bg-white border border-[#d8d1bf] font-bold text-[#1f332b] text-center shrink-0">
                     7 + 4 =
                   </div>
 
@@ -225,27 +225,27 @@ export default function IletisimPage() {
                       setSuccess("");
                     }}
                     placeholder="Sonuç"
-                    className="flex-1 px-4 py-4 rounded-2xl border border-[#d8d1bf] outline-none focus:border-[#1f5f4b] bg-white"
+                    className="w-full min-w-0 sm:flex-1 px-4 py-4 rounded-2xl border border-[#d8d1bf] outline-none focus:border-[#1f5f4b] bg-white"
                   />
                 </div>
               </div>
 
               {error && (
-                <p className="bg-red-50 text-red-600 px-4 py-3 rounded-xl text-sm">
+                <p className="bg-red-50 text-red-600 px-4 py-3 rounded-xl text-sm break-words">
                   {error}
                 </p>
               )}
 
               {success && (
-                <p className="bg-green-50 text-green-700 px-4 py-3 rounded-xl text-sm flex items-center gap-2">
-                  <CheckCircle size={18} />
+                <p className="bg-green-50 text-green-700 px-4 py-3 rounded-xl text-sm flex items-start gap-2 break-words">
+                  <CheckCircle size={18} className="shrink-0 mt-0.5" />
                   {success}
                 </p>
               )}
 
               <button
                 type="submit"
-                className="w-full inline-flex items-center justify-center gap-2 bg-[#1f5f4b] text-white px-7 py-4 rounded-full font-bold hover:bg-[#174637] transition"
+                className="w-full inline-flex items-center justify-center gap-2 bg-[#1f5f4b] text-white px-5 sm:px-7 py-4 rounded-full font-bold hover:bg-[#174637] transition"
               >
                 <Send size={19} />
                 Mesaj Gönder
@@ -253,9 +253,9 @@ export default function IletisimPage() {
             </form>
           </div>
 
-          <div className="space-y-6">
-            <div className="bg-white rounded-[2rem] p-4 shadow-sm border border-[#ebe4d6]">
-              <div className="rounded-[1.5rem] overflow-hidden h-[360px]">
+          <div className="space-y-6 min-w-0">
+            <div className="bg-white rounded-[2rem] p-4 shadow-sm border border-[#ebe4d6] min-w-0">
+              <div className="rounded-[1.5rem] overflow-hidden h-[300px] sm:h-[360px] min-w-0">
                 <iframe
                   title="Psikolog Merkezi Harita"
                   src={`https://www.google.com/maps?q=${mapQuery}&output=embed`}
@@ -263,7 +263,7 @@ export default function IletisimPage() {
                   height="100%"
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
-                  className="border-0"
+                  className="border-0 block w-full"
                 />
               </div>
             </div>
@@ -272,24 +272,26 @@ export default function IletisimPage() {
               href={directionsUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full inline-flex items-center justify-center gap-2 bg-[#1f5f4b] text-white px-7 py-4 rounded-full font-bold hover:bg-[#174637] transition"
+              className="w-full inline-flex items-center justify-center gap-2 bg-[#1f5f4b] text-white px-5 sm:px-7 py-4 rounded-full font-bold hover:bg-[#174637] transition"
             >
               <MapPin size={20} />
               Yol Tarifi Al
             </a>
 
-            <div className="grid sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 min-w-0">
               <a
                 href={`tel:${phoneNumber}`}
-                className="bg-white rounded-[2rem] p-6 border border-[#ebe4d6] shadow-sm hover:shadow-lg transition flex items-center gap-4"
+                className="bg-white rounded-[2rem] p-5 sm:p-6 border border-[#ebe4d6] shadow-sm hover:shadow-lg transition flex items-center gap-4 min-w-0"
               >
-                <div className="w-12 h-12 bg-[#e3efe8] rounded-2xl flex items-center justify-center">
+                <div className="w-12 h-12 bg-[#e3efe8] rounded-2xl flex items-center justify-center shrink-0">
                   <Phone className="text-[#1f5f4b]" size={24} />
                 </div>
 
-                <div>
+                <div className="min-w-0">
                   <p className="text-sm text-[#7a8b7f]">Telefon</p>
-                  <p className="font-bold text-[#1f332b]">+90 555 000 00 00</p>
+                  <p className="font-bold text-[#1f332b] text-sm sm:text-base break-words">
+                    +90 555 000 00 00
+                  </p>
                 </div>
               </a>
 
@@ -297,25 +299,27 @@ export default function IletisimPage() {
                 href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-white rounded-[2rem] p-6 border border-[#ebe4d6] shadow-sm hover:shadow-lg transition flex items-center gap-4"
+                className="bg-white rounded-[2rem] p-5 sm:p-6 border border-[#ebe4d6] shadow-sm hover:shadow-lg transition flex items-center gap-4 min-w-0"
               >
-                <div className="w-12 h-12 bg-[#e3efe8] rounded-2xl flex items-center justify-center">
+                <div className="w-12 h-12 bg-[#e3efe8] rounded-2xl flex items-center justify-center shrink-0">
                   <MessageCircle className="text-[#1f5f4b]" size={24} />
                 </div>
 
-                <div>
+                <div className="min-w-0">
                   <p className="text-sm text-[#7a8b7f]">WhatsApp</p>
-                  <p className="font-bold text-[#1f332b]">Mesaj Gönder</p>
+                  <p className="font-bold text-[#1f332b] text-sm sm:text-base break-words">
+                    Mesaj Gönder
+                  </p>
                 </div>
               </a>
             </div>
 
-            <div className="bg-white rounded-[2rem] p-6 border border-[#ebe4d6] shadow-sm">
+            <div className="bg-white rounded-[2rem] p-5 sm:p-6 border border-[#ebe4d6] shadow-sm min-w-0">
               <h3 className="text-xl font-serif font-bold text-[#1f332b]">
                 Adres
               </h3>
 
-              <p className="mt-3 text-[#5f6f66] leading-relaxed">
+              <p className="mt-3 text-[#5f6f66] leading-relaxed break-words">
                 Kavaklıdere, Ankara / Türkiye
               </p>
             </div>
