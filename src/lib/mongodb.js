@@ -20,5 +20,5 @@ if (process.env.NODE_ENV === "development") {
   client = new MongoClient(uri);
   clientPromise = client.connect();
 }
-
+console.log("MONGODB URI:", process.env.MONGODB_URI);
 export default clientPromise;

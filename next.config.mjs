@@ -1,7 +1,7 @@
-/** @type {import('next').NextConfig} */
+import path from "path";
+
 const nextConfig = {
-  /* config options here */
-  reactCompiler: true,
+  outputFileTracingRoot: path.join(process.cwd()),
 };
 
 export default nextConfig;
