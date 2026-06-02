@@ -7,6 +7,7 @@ import { Edit, LogOut, Newspaper, Trash2 } from "lucide-react";
 import BlogForm from "@/components/BlogForm";
 import { useAuthStore } from "@/store/authStore";
 import AdminMessages from "@/components/AdminMessages";
+import AdminAppointments from "@/components/AdminAppointments";
 
 export default function AdminDashboardPage() {
   const router = useRouter();
@@ -170,6 +171,9 @@ export default function AdminDashboardPage() {
             </div>
           </div>
         </div>
+      </div>
+      <div className="mt-8 mx-5 lg:mx-35">
+        <AdminAppointments />
       </div>
       <div className="mt-8 mx-5 lg:mx-35">
         <AdminMessages />

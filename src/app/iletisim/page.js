@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { MapPin, Phone, MessageCircle, Send, CheckCircle } from "lucide-react";
+import AppointmentForm from "@/components/AppointmentForm";
 
 export default function IletisimPage() {
   const captchaResult = 7 + 4;
@@ -17,8 +18,8 @@ export default function IletisimPage() {
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
 
-  const phoneNumber = "+905550000000";
-  const whatsappNumber = "905550000000";
+  const phoneNumber = "+905442030662";
+  const whatsappNumber = "905442030662";
 
   const address = "Kavaklıdere, Ankara";
   const mapQuery = encodeURIComponent(address);
@@ -138,6 +139,12 @@ export default function IletisimPage() {
             almak için formu doldurabilir ya da doğrudan bizimle iletişime
             geçebilirsiniz.
           </p>
+        </div>
+      </section>
+
+      <section className="pb-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-5 lg:px-8">
+          <AppointmentForm />
         </div>
       </section>
 
