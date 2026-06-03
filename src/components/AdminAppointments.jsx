@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { CalendarDays, Clock, Phone, Trash2 } from "lucide-react";
 
-export default function AdminAppointments() {
+export default function AdminAppointments({ onStatsChange }) {
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -27,30 +27,32 @@ export default function AdminAppointments() {
   }, []);
 
   const updateStatus = async (id, status) => {
-    await fetch(`/api/appointments/${id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ status }),
-    });
+  await fetch(`/api/appointments/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ status }),
+  });
 
-    fetchAppointments();
-  };
+  fetchAppointments();
+  onStatsChange?.();
+};
 
-  const deleteAppointment = async (id) => {
-    const confirmDelete = confirm(
-      "Bu randevuyu silmek istediğinize emin misiniz?"
-    );
+const deleteAppointment = async (id) => {
+  const confirmDelete = confirm(
+    "Bu randevuyu silmek istediğinize emin misiniz?"
+  );
 
-    if (!confirmDelete) return;
+  if (!confirmDelete) return;
 
-    await fetch(`/api/appointments/${id}`, {
-      method: "DELETE",
-    });
+  await fetch(`/api/appointments/${id}`, {
+    method: "DELETE",
+  });
 
-    fetchAppointments();
-  };
+  fetchAppointments();
+  onStatsChange?.();
+};
 
   const getStatusClass = (status) => {
     if (status === "Onaylandı") return "bg-green-100 text-green-700";

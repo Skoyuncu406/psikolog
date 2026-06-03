@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { CheckCircle, Mail, Phone, Trash2 } from "lucide-react";
 
-export default function AdminMessages() {
+export default function AdminMessages({ onStatsChange }) {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -26,25 +26,27 @@ export default function AdminMessages() {
     fetchMessages();
   }, []);
 
-  const markAsRead = async (id) => {
-    await fetch(`/api/messages/${id}`, {
-      method: "PATCH",
-    });
+const markAsRead = async (id) => {
+  await fetch(`/api/messages/${id}`, {
+    method: "PATCH",
+  });
 
-    fetchMessages();
-  };
+  fetchMessages();
+  onStatsChange?.();
+};
 
-  const deleteMessage = async (id) => {
-    const confirmDelete = confirm("Bu mesajı silmek istediğinize emin misiniz?");
+const deleteMessage = async (id) => {
+  const confirmDelete = confirm("Bu mesajı silmek istediğinize emin misiniz?");
 
-    if (!confirmDelete) return;
+  if (!confirmDelete) return;
 
-    await fetch(`/api/messages/${id}`, {
-      method: "DELETE",
-    });
+  await fetch(`/api/messages/${id}`, {
+    method: "DELETE",
+  });
 
-    fetchMessages();
-  };
+  fetchMessages();
+  onStatsChange?.();
+};
 
   if (loading) {
     return (
