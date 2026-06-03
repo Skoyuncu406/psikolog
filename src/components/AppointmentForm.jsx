@@ -180,7 +180,7 @@ export default function AppointmentForm() {
               min={today}
               value={form.appointmentDate}
               onChange={handleChange}
-              className="w-full pl-12 pr-4 py-4 rounded-2xl border border-[#d8d1bf] outline-none focus:border-[#1f5f4b] bg-[#f7f5ef]"
+              className="w-fit lg:w-full  pl-12 pr-4 py-4 rounded-2xl border border-[#d8d1bf] outline-none focus:border-[#1f5f4b] bg-[#f7f5ef]"
             />
           </div>
 
