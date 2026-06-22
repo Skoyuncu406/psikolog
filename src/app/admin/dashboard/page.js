@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Edit, LogOut, Newspaper, Trash2 } from "lucide-react";
+import { ArrowRight, Edit, LogOut, Newspaper, Trash2 } from "lucide-react";
 
 import BlogForm from "@/components/BlogForm";
 import AdminMessages from "@/components/AdminMessages";
@@ -52,9 +52,10 @@ export default function AdminDashboardPage() {
       });
 
       const data = await res.json();
-      setBlogs(data);
+      setBlogs(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error("Bloglar alınamadı:", error);
+      setBlogs([]);
     }
   };
 
@@ -86,16 +87,21 @@ export default function AdminDashboardPage() {
   if (!isAdmin) {
     return (
       <div className="min-h-[75vh] bg-[#f7f5ef] flex items-center justify-center px-5">
-        <div className="bg-white rounded-[2rem] p-8 text-center shadow-sm border border-[#ebe4d6]">
-          <h1 className="text-3xl font-serif font-bold text-[#1f332b]">
+        <div className="max-w-md text-center border-t border-[#1f332b]/10 pt-10">
+          <h1 className="text-4xl font-serif font-bold text-[#1f332b]">
             Yetkisiz Giriş
           </h1>
 
+          <p className="mt-4 text-[#5f6f66]">
+            Admin paneline erişmek için giriş yapmanız gerekir.
+          </p>
+
           <Link
             href="/admin"
-            className="mt-6 inline-flex bg-[#1f5f4b] text-white px-6 py-3 rounded-full font-semibold"
+            className="mt-8 inline-flex items-center gap-2 rounded-full bg-[#1f332b] text-white px-7 py-4 font-semibold hover:bg-[#1f5f4b] transition"
           >
             Admin Girişine Git
+            <ArrowRight size={18} />
           </Link>
         </div>
       </div>
@@ -103,121 +109,168 @@ export default function AdminDashboardPage() {
   }
 
   return (
-    <div className="bg-[#f7f5ef] min-h-screen py-12 overflow-x-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-5 lg:px-8">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-5 mb-10">
-          <div>
-            <span className="text-[#1f5f4b] font-semibold">Admin Paneli</span>
+    <div className="bg-[#f7f5ef] min-h-screen overflow-x-hidden">
+      <section className="border-b border-[#1f332b]/10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-5 lg:px-8 py-12 lg:py-16">
+          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8">
+            <div>
+              <span className="text-sm uppercase tracking-[0.35em] text-[#1f5f4b]">
+                Admin Paneli
+              </span>
 
-            <h1 className="mt-2 text-4xl md:text-5xl font-serif font-bold text-[#1f332b]">
-              Blog Yönetimi
-            </h1>
+              <h1 className="mt-5 text-5xl md:text-6xl font-serif font-bold text-[#1f332b] leading-tight">
+                İçerik ve randevu yönetimi.
+              </h1>
+
+              <p className="mt-5 max-w-2xl text-[#5f6f66] text-lg leading-relaxed">
+                Blog yazılarını, gelen mesajları ve randevu taleplerini tek
+                panelden yönetin.
+              </p>
+            </div>
+
+            <button
+              onClick={handleLogout}
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-[#1f332b] text-white px-7 py-4 font-semibold hover:bg-[#1f5f4b] transition"
+            >
+              <LogOut size={18} />
+              Çıkış Yap
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-10 border-b border-[#1f332b]/10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-5 lg:px-8">
+          <AdminStats stats={stats} loading={statsLoading} />
+        </div>
+      </section>
+
+      <section className="py-14 lg:py-20 border-b border-[#1f332b]/10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-5 lg:px-8 grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-14 items-start">
+          <div className="min-w-0">
+            <span className="text-sm uppercase tracking-[0.3em] text-[#1f5f4b]">
+              Blog Formu
+            </span>
+
+            <h2 className="mt-5 text-4xl md:text-5xl font-serif font-bold text-[#1f332b] leading-tight">
+              Yeni içerik oluşturun veya mevcut yazıyı düzenleyin.
+            </h2>
+
+            <div className="mt-10">
+              <BlogForm
+                editingBlog={editingBlog}
+                onSuccess={() => {
+                  fetchBlogs();
+                  fetchStats();
+                  setEditingBlog(null);
+                }}
+                onCancel={() => setEditingBlog(null)}
+              />
+            </div>
           </div>
 
-          <button
-            onClick={handleLogout}
-            className="inline-flex items-center justify-center gap-2 bg-[#1f332b] text-white px-6 py-3 rounded-full font-semibold hover:bg-[#111f19] transition"
-          >
-            <LogOut size={18} />
-            Çıkış Yap
-          </button>
-        </div>
+          <div className="min-w-0">
+            <div className="flex items-center justify-between gap-6 border-b border-[#1f332b]/10 pb-6">
+              <div className="flex items-center gap-4 min-w-0">
+                <Newspaper className="text-[#1f5f4b] shrink-0" size={26} />
 
-        <AdminStats stats={stats} loading={statsLoading} />
+                <div className="min-w-0">
+                  <h2 className="text-3xl font-serif font-bold text-[#1f332b]">
+                    Yayındaki Makaleler
+                  </h2>
 
-        <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-8 items-start">
-          <BlogForm
-            editingBlog={editingBlog}
-            onSuccess={() => {
-              fetchBlogs();
-              fetchStats();
-              setEditingBlog(null);
-            }}
-            onCancel={() => setEditingBlog(null)}
-          />
-
-          <div className="bg-white rounded-[2rem] p-5 sm:p-8 shadow-sm border border-[#ebe4d6] min-w-0">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-12 h-12 bg-[#e3efe8] rounded-2xl flex items-center justify-center shrink-0">
-                <Newspaper className="text-[#1f5f4b]" size={24} />
-              </div>
-
-              <div className="min-w-0">
-                <h2 className="text-2xl font-serif font-bold text-[#1f332b]">
-                  Yayındaki Makaleler
-                </h2>
-                <p className="text-sm text-[#5f6f66]">
-                  Toplam {blogs.length} makale
-                </p>
+                  <p className="mt-1 text-sm text-[#5f6f66]">
+                    Toplam {blogs.length} makale
+                  </p>
+                </div>
               </div>
             </div>
 
-            <div className="space-y-4 max-h-[720px] overflow-y-auto pr-2">
+            <div className="max-h-[760px] overflow-y-auto pr-2">
               {blogs.length > 0 ? (
-                blogs.map((blog) => (
-                  <div
-                    key={blog._id}
-                    className="border border-[#ebe4d6] rounded-2xl p-4 bg-[#f7f5ef]"
-                  >
-                    <div className="flex gap-4 min-w-0">
-                      <img
-                        src={blog.image}
-                        alt={blog.title}
-                        className="w-20 h-20 rounded-xl object-cover bg-[#d6e7dc] shrink-0"
-                      />
+                <div className="border-t border-[#1f332b]/10">
+                  {blogs.map((blog, index) => (
+                    <div
+                      key={blog._id}
+                      className="group py-6 border-b border-[#1f332b]/10"
+                    >
+                      <div className="grid grid-cols-[44px_1fr] gap-4 min-w-0">
+                        <span className="font-serif text-2xl text-[#7a8b7f] group-hover:text-[#1f5f4b] transition">
+                          {String(index + 1).padStart(2, "0")}
+                        </span>
 
-                      <div className="flex-1 min-w-0">
-                        <h3 className="font-bold text-[#1f332b] line-clamp-2 break-words">
-                          {blog.title}
-                        </h3>
+                        <div className="min-w-0">
+                          <div className="flex gap-4 min-w-0">
+                            {blog.image && (
+                              <img
+                                src={blog.image}
+                                alt={blog.title}
+                                className="w-16 h-16 rounded-2xl object-cover bg-[#d6e7dc] shrink-0"
+                              />
+                            )}
 
-                        <p className="text-sm text-[#7a8b7f] mt-1">
-                          {blog.date}
-                        </p>
+                            <div className="min-w-0 flex-1">
+                              <h3 className="font-serif text-xl font-bold text-[#1f332b] line-clamp-2 break-words group-hover:text-[#1f5f4b] transition">
+                                {blog.title}
+                              </h3>
 
-                        <div className="flex flex-wrap gap-2 mt-3">
-                          <button
-                            onClick={() => setEditingBlog(blog)}
-                            className="inline-flex items-center gap-1 text-sm bg-[#1f5f4b] text-white px-3 py-2 rounded-full"
-                          >
-                            <Edit size={14} />
-                            Düzenle
-                          </button>
+                              <p className="mt-1 text-sm text-[#7a8b7f]">
+                                {blog.date}
+                              </p>
+                            </div>
+                          </div>
 
-                          <button
-                            onClick={() => handleDelete(blog._id)}
-                            className="inline-flex items-center gap-1 text-sm bg-red-600 text-white px-3 py-2 rounded-full"
-                          >
-                            <Trash2 size={14} />
-                            Sil
-                          </button>
+                          <div className="mt-5 flex flex-wrap gap-3">
+                            <button
+                              onClick={() => setEditingBlog(blog)}
+                              className="inline-flex items-center gap-2 text-sm text-[#1f5f4b] font-semibold hover:text-[#1f332b] transition"
+                            >
+                              <Edit size={15} />
+                              Düzenle
+                            </button>
 
-                          <Link
-                            href={`/blog/${blog.slug}`}
-                            className="inline-flex items-center gap-1 text-sm bg-white text-[#1f5f4b] px-3 py-2 rounded-full"
-                          >
-                            Görüntüle
-                          </Link>
+                            <button
+                              onClick={() => handleDelete(blog._id)}
+                              className="inline-flex items-center gap-2 text-sm text-red-600 font-semibold hover:text-red-700 transition"
+                            >
+                              <Trash2 size={15} />
+                              Sil
+                            </button>
+
+                            <Link
+                              href={`/blog/${blog.slug}`}
+                              className="inline-flex items-center gap-2 text-sm text-[#1f332b] font-semibold hover:text-[#1f5f4b] transition"
+                            >
+                              Görüntüle
+                              <ArrowRight size={15} />
+                            </Link>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                ))
+                  ))}
+                </div>
               ) : (
-                <p className="text-[#5f6f66]">Henüz makale eklenmemiş.</p>
+                <div className="py-10 border-b border-[#1f332b]/10">
+                  <p className="text-[#5f6f66]">Henüz makale eklenmemiş.</p>
+                </div>
               )}
             </div>
           </div>
         </div>
+      </section>
 
-        <div className="mt-8">
+      <section className="py-14 lg:py-20 border-b border-[#1f332b]/10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-5 lg:px-8">
           <AdminAppointments onStatsChange={fetchStats} />
         </div>
+      </section>
 
-        <div className="mt-8">
+      <section className="py-14 lg:py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-5 lg:px-8">
           <AdminMessages onStatsChange={fetchStats} />
         </div>
-      </div>
+      </section>
     </div>
   );
 }

@@ -1,11 +1,27 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { CalendarDays, Clock, Phone, Trash2 } from "lucide-react";
+import {
+  ArrowRight,
+  CalendarDays,
+  CheckCircle,
+  Clock,
+  Phone,
+  RotateCcw,
+  Trash2,
+  XCircle,
+} from "lucide-react";
 
 export default function AdminAppointments({ onStatsChange }) {
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const normalizeAppointments = (data) => {
+    if (Array.isArray(data)) return data;
+    if (Array.isArray(data?.appointments)) return data.appointments;
+    if (Array.isArray(data?.data)) return data.data;
+    return [];
+  };
 
   const fetchAppointments = async () => {
     try {
@@ -14,9 +30,10 @@ export default function AdminAppointments({ onStatsChange }) {
       });
 
       const data = await res.json();
-      setAppointments(data);
+      setAppointments(normalizeAppointments(data));
     } catch (error) {
       console.error("Randevular alınamadı:", error);
+      setAppointments([]);
     } finally {
       setLoading(false);
     }
@@ -27,42 +44,48 @@ export default function AdminAppointments({ onStatsChange }) {
   }, []);
 
   const updateStatus = async (id, status) => {
-  await fetch(`/api/appointments/${id}`, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ status }),
-  });
+    await fetch(`/api/appointments/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ status }),
+    });
 
-  fetchAppointments();
-  onStatsChange?.();
-};
+    fetchAppointments();
+    onStatsChange?.();
+  };
 
-const deleteAppointment = async (id) => {
-  const confirmDelete = confirm(
-    "Bu randevuyu silmek istediğinize emin misiniz?"
-  );
+  const deleteAppointment = async (id) => {
+    const confirmDelete = confirm(
+      "Bu randevuyu silmek istediğinize emin misiniz?"
+    );
 
-  if (!confirmDelete) return;
+    if (!confirmDelete) return;
 
-  await fetch(`/api/appointments/${id}`, {
-    method: "DELETE",
-  });
+    await fetch(`/api/appointments/${id}`, {
+      method: "DELETE",
+    });
 
-  fetchAppointments();
-  onStatsChange?.();
-};
+    fetchAppointments();
+    onStatsChange?.();
+  };
 
   const getStatusClass = (status) => {
-    if (status === "Onaylandı") return "bg-green-100 text-green-700";
-    if (status === "İptal Edildi") return "bg-red-100 text-red-700";
-    return "bg-yellow-100 text-yellow-700";
+    if (status === "Onaylandı") {
+      return "bg-green-50 text-green-700 border-green-200";
+    }
+
+    if (status === "İptal Edildi") {
+      return "bg-red-50 text-red-700 border-red-200";
+    }
+
+    return "bg-yellow-50 text-yellow-700 border-yellow-200";
   };
 
   if (loading) {
     return (
-      <div className="bg-white rounded-[2rem] p-8 border border-[#ebe4d6]">
+      <div className="border-t border-[#1f332b]/10 pt-8">
         <p className="text-[#1f5f4b] font-semibold">
           Randevular yükleniyor...
         </p>
@@ -71,49 +94,49 @@ const deleteAppointment = async (id) => {
   }
 
   return (
-    <div className="bg-white rounded-[2rem] p-5 sm:p-8 shadow-sm border border-[#ebe4d6]">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+    <div className="min-w-0">
+      <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-10">
         <div>
-          <h2 className="text-3xl font-serif font-bold text-[#1f332b]">
-            Randevu Takvimi
+          <span className="text-sm uppercase tracking-[0.3em] text-[#1f5f4b]">
+            Randevu Talepleri
+          </span>
+
+          <h2 className="mt-5 text-4xl md:text-5xl font-serif font-bold text-[#1f332b] leading-tight">
+            Görüşme takvimi ve talepler.
           </h2>
 
-          <p className="text-[#5f6f66] mt-2">
-            Toplam {appointments.length} randevu talebi
+          <p className="mt-4 text-[#5f6f66] text-lg leading-relaxed">
+            Toplam {appointments.length} randevu talebi bulunuyor.
           </p>
         </div>
       </div>
 
-      <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
-        {appointments.length > 0 ? (
-          appointments.map((item) => (
+      {appointments.length > 0 ? (
+        <div className="border-t border-[#1f332b]/10">
+          {appointments.map((item, index) => (
             <div
               key={item._id}
-              className="rounded-2xl border border-[#ebe4d6] bg-[#f7f5ef] p-5"
+              className="group grid grid-cols-1 xl:grid-cols-[80px_1.1fr_0.9fr_1.1fr_auto] gap-6 items-start py-8 border-b border-[#1f332b]/10"
             >
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <h3 className="font-bold text-[#1f332b]">{item.name}</h3>
+              <span className="font-serif text-3xl text-[#7a8b7f] group-hover:text-[#1f5f4b] transition">
+                {String(index + 1).padStart(2, "0")}
+              </span>
 
-                  <a
-                    href={`tel:${item.phone}`}
-                    className="mt-2 inline-flex items-center gap-2 text-sm text-[#1f5f4b] font-semibold"
-                  >
-                    <Phone size={15} />
-                    {item.phone}
-                  </a>
-                </div>
+              <div className="min-w-0">
+                <h3 className="text-2xl font-serif font-bold text-[#1f332b] break-words group-hover:text-[#1f5f4b] transition">
+                  {item.name}
+                </h3>
 
-                <span
-                  className={`text-xs px-3 py-1 rounded-full font-semibold ${getStatusClass(
-                    item.status
-                  )}`}
+                <a
+                  href={`tel:${item.phone}`}
+                  className="mt-3 inline-flex items-center gap-2 text-sm text-[#1f5f4b] font-semibold break-all"
                 >
-                  {item.status}
-                </span>
+                  <Phone size={15} />
+                  {item.phone}
+                </a>
               </div>
 
-              <div className="mt-5 space-y-3">
+              <div className="space-y-3">
                 <p className="flex items-center gap-2 text-[#1f332b] font-semibold">
                   <CalendarDays size={18} className="text-[#1f5f4b]" />
                   {item.appointmentDate}
@@ -124,49 +147,60 @@ const deleteAppointment = async (id) => {
                   {item.appointmentTime}
                 </p>
 
-                <p className="text-[#5f6f66] leading-relaxed whitespace-pre-line">
-                  {item.note}
-                </p>
+                <span
+                  className={`inline-flex border text-xs px-3 py-1 rounded-full font-semibold ${getStatusClass(
+                    item.status
+                  )}`}
+                >
+                  {item.status}
+                </span>
               </div>
 
-              <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <p className="text-[#5f6f66] leading-relaxed whitespace-pre-line break-words">
+                {item.note}
+              </p>
+
+              <div className="flex xl:flex-col flex-wrap gap-3 xl:items-start">
                 <button
                   onClick={() => updateStatus(item._id, "Onaylandı")}
-                  className="bg-green-600 text-white px-3 py-2 rounded-full text-sm font-semibold"
+                  className="inline-flex items-center gap-2 text-sm text-green-700 font-semibold hover:text-green-900 transition"
                 >
+                  <CheckCircle size={15} />
                   Onayla
                 </button>
 
                 <button
                   onClick={() => updateStatus(item._id, "İptal Edildi")}
-                  className="bg-red-600 text-white px-3 py-2 rounded-full text-sm font-semibold"
+                  className="inline-flex items-center gap-2 text-sm text-red-600 font-semibold hover:text-red-800 transition"
                 >
+                  <XCircle size={15} />
                   İptal Et
                 </button>
 
                 <button
                   onClick={() => updateStatus(item._id, "Bekliyor")}
-                  className="bg-yellow-500 text-white px-3 py-2 rounded-full text-sm font-semibold"
+                  className="inline-flex items-center gap-2 text-sm text-yellow-700 font-semibold hover:text-yellow-900 transition"
                 >
+                  <RotateCcw size={15} />
                   Bekliyor
                 </button>
 
                 <button
                   onClick={() => deleteAppointment(item._id)}
-                  className="bg-[#1f332b] text-white px-3 py-2 rounded-full text-sm font-semibold inline-flex items-center justify-center gap-1"
+                  className="inline-flex items-center gap-2 text-sm text-[#1f332b] font-semibold hover:text-red-600 transition"
                 >
                   <Trash2 size={15} />
                   Sil
                 </button>
               </div>
             </div>
-          ))
-        ) : (
-          <div className="md:col-span-2 xl:col-span-3 bg-[#f7f5ef] rounded-2xl p-8 text-center">
-            <p className="text-[#5f6f66]">Henüz randevu talebi yok.</p>
-          </div>
-        )}
-      </div>
+          ))}
+        </div>
+      ) : (
+        <div className="py-10 border-y border-[#1f332b]/10">
+          <p className="text-[#5f6f66]">Henüz randevu talebi yok.</p>
+        </div>
+      )}
     </div>
   );
 }

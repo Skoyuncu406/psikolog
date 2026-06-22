@@ -1,11 +1,11 @@
 import Link from "next/link";
 import {
   ArrowRight,
+  CheckCircle,
   HeartHandshake,
   Leaf,
   MessageCircle,
   ShieldCheck,
-  Sparkles,
 } from "lucide-react";
 
 export const metadata = {
@@ -16,50 +16,47 @@ export const metadata = {
 
 export default function HomePage() {
   const services = [
-    {
-      title: "Bireysel Terapi",
-      desc: "Kaygı, stres, özgüven, ilişki sorunları ve yaşam geçişleri üzerine destek.",
-      icon: HeartHandshake,
-    },
-    {
-      title: "Online Terapi",
-      desc: "Bulunduğunuz yerden güvenli ve düzenli psikolojik danışmanlık süreci.",
-      icon: MessageCircle,
-    },
-    {
-      title: "Kaygı ve Stres Yönetimi",
-      desc: "Günlük yaşamı zorlaştıran düşünce ve duygu döngülerini anlamaya yönelik destek.",
-      icon: Leaf,
-    },
+    "Bireysel Terapi",
+    "Online Terapi",
+    "Kaygı ve Stres Yönetimi",
+    "İlişki Problemleri",
+  ];
+
+  const principles = [
+    "Gizlilik ve etik ilkeler",
+    "Danışan odaklı yaklaşım",
+    "Yargılayıcı olmayan güvenli alan",
   ];
 
   return (
-    <div className="overflow-hidden">
+    <div className="bg-[#f7f5ef] overflow-x-hidden">
       {/* HERO */}
-      <section className="relative bg-[#f7f5ef]">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,#c9dfd2,transparent_35%),radial-gradient(circle_at_bottom_left,#efe5d3,transparent_35%)]" />
+      <section className="relative min-h-[calc(100vh-80px)] flex items-center border-b border-[#1f332b]/10">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,#d6e7dc,transparent_32%),radial-gradient(circle_at_15%_80%,#efe5d3,transparent_34%)]" />
 
-        <div className="relative max-w-7xl mx-auto px-5 lg:px-8 py-10 lg:pt-15 lg:pb-26 grid lg:grid-cols-2 gap-14 items-center">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-5 lg:px-8 py-20 grid lg:grid-cols-[1.1fr_0.9fr] gap-16 items-center">
           <div>
-            <span className="inline-flex items-center gap-2 bg-white/70 border border-[#d8d1bf] px-4 py-2 rounded-full text-sm text-[#1f5f4b] font-medium mb-6">
-              <Sparkles size={16} />
-              Psikolojik Danışmanlık & Terapi
-            </span>
+            <div className="mb-8 inline-flex items-center gap-3 border border-[#1f332b]/10 bg-white/50 rounded-full px-4 py-2">
+              <span className="w-2 h-2 rounded-full bg-[#1f5f4b]" />
+              <span className="text-sm text-[#1f332b]/70">
+                Terapi & Psikolojik Danışmanlık
+              </span>
+            </div>
 
-            <h1 className="text-4xl md:text-6xl font-serif font-bold text-[#1f332b] leading-tight">
-              Kendinize iyi gelmek için güvenli bir alan.
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-serif font-bold tracking-tight text-[#1f332b] leading-[1.02]">
+              Kendinizi duymak için sakin bir alan.
             </h1>
 
-            <p className="mt-6 text-lg text-[#5f6f66] leading-relaxed max-w-xl">
+            <p className="mt-8 max-w-2xl text-lg sm:text-xl text-[#5f6f66] leading-relaxed">
               Zorlayıcı duygu, düşünce ve yaşam deneyimlerinizi anlamlandırmak;
-              daha dengeli ve sağlıklı bir yaşam kurmak için profesyonel destek
-              sunuyoruz.
+              daha dengeli, güvenli ve sürdürülebilir bir içsel yaşam kurmak
+              için profesyonel destek sunuyoruz.
             </p>
 
-            <div className="mt-8 flex flex-col sm:flex-row gap-4">
+            <div className="mt-10 flex flex-col sm:flex-row gap-4">
               <Link
                 href="/iletisim"
-                className="bg-[#1f5f4b] text-white px-7 py-4 rounded-full font-semibold hover:bg-[#174637] transition flex items-center justify-center gap-2"
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-[#1f332b] text-white px-8 py-4 font-semibold hover:bg-[#1f5f4b] transition"
               >
                 Randevu Al
                 <ArrowRight size={18} />
@@ -67,161 +64,187 @@ export default function HomePage() {
 
               <Link
                 href="/hizmetlerimiz"
-                className="bg-white text-[#1f332b] px-7 py-4 rounded-full font-semibold border border-[#d8d1bf] hover:border-[#1f5f4b] transition text-center"
+                className="inline-flex items-center justify-center gap-2 rounded-full border border-[#1f332b]/15 bg-white/50 text-[#1f332b] px-8 py-4 font-semibold hover:bg-white transition"
               >
                 Hizmetleri İncele
               </Link>
             </div>
+
+            <div className="mt-14 grid grid-cols-3 gap-6 max-w-xl border-t border-[#1f332b]/10 pt-8">
+              <div>
+                <p className="text-3xl font-serif font-bold text-[#1f332b]">
+                  01
+                </p>
+                <p className="mt-2 text-sm text-[#5f6f66]">Güvenli Alan</p>
+              </div>
+
+              <div>
+                <p className="text-3xl font-serif font-bold text-[#1f332b]">
+                  02
+                </p>
+                <p className="mt-2 text-sm text-[#5f6f66]">Etik Yaklaşım</p>
+              </div>
+
+              <div>
+                <p className="text-3xl font-serif font-bold text-[#1f332b]">
+                  03
+                </p>
+                <p className="mt-2 text-sm text-[#5f6f66]">Kişiye Özel</p>
+              </div>
+            </div>
           </div>
 
           <div className="relative">
-            <div className="rounded-[2.5rem] bg-white p-4 shadow-2xl shadow-[#1f332b]/10">
-              <div className="h-[430px] rounded-[2rem] bg-gradient-to-br from-[#d6e7dc] via-[#f4efe3] to-[#9db9a9] flex items-center justify-center">
-                <div className="text-center px-8">
-                  <div className="w-24 h-24 rounded-full bg-white/80 mx-auto mb-6 flex items-center justify-center">
-                    <Leaf size={42} className="text-[#1f5f4b]" />
-                  </div>
-                  <h3 className="text-3xl font-serif font-bold text-[#1f332b]">
-                    Sakin, güvenli ve profesyonel terapi süreci
-                  </h3>
-                  <p className="mt-4 text-[#5f6f66]">
-                    Her danışanın ihtiyacına göre şekillenen bireysel yaklaşım.
+            <div className="aspect-[4/5] rounded-t-full border border-[#1f332b]/10 bg-[#e3efe8] overflow-hidden">
+              <div className="h-full w-full bg-[linear-gradient(145deg,#d6e7dc,#f7f5ef,#9db9a9)] flex items-center justify-center">
+                <div className="text-center px-10">
+                  <Leaf size={64} className="mx-auto text-[#1f5f4b]" />
+
+                  <h2 className="mt-8 text-4xl font-serif font-bold text-[#1f332b]">
+                    Sakinlik, güven ve farkındalık.
+                  </h2>
+
+                  <p className="mt-5 text-[#5f6f66] leading-relaxed">
+                    Terapi süreci, kişinin kendisini daha iyi anlaması için
+                    güvenli ve etik bir çerçeve sunar.
                   </p>
                 </div>
               </div>
             </div>
 
-            <div className="absolute -bottom-6 -left-4 bg-white rounded-3xl shadow-xl p-5 max-w-xs hidden md:block">
+            <div className="absolute -left-6 bottom-14 hidden md:block bg-[#f7f5ef] border border-[#1f332b]/10 px-6 py-5 rounded-full shadow-sm">
               <div className="flex items-center gap-3">
-                <ShieldCheck className="text-[#1f5f4b]" />
-                <p className="text-sm text-[#5f6f66]">
-                  Gizlilik, güven ve etik ilkeler çerçevesinde danışmanlık.
-                </p>
+                <ShieldCheck size={22} className="text-[#1f5f4b]" />
+                <span className="text-sm font-semibold text-[#1f332b]">
+                  Gizlilik önceliklidir
+                </span>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* KISA TANITIM */}
-      <section className="bg-white py-20">
-        <div className="max-w-7xl mx-auto px-5 lg:px-8 grid lg:grid-cols-3 gap-10 items-start">
+      {/* ABOUT INTRO */}
+      <section className="py-24 lg:py-32 border-b border-[#1f332b]/10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-5 lg:px-8 grid lg:grid-cols-[0.8fr_1.2fr] gap-14">
           <div>
-            <span className="text-[#1f5f4b] font-semibold">Hakkımızda</span>
-            <h2 className="mt-3 text-3xl md:text-4xl font-serif font-bold text-[#1f332b]">
-              Danışan odaklı, güven veren ve sürdürülebilir destek.
+            <span className="text-sm uppercase tracking-[0.3em] text-[#1f5f4b]">
+              Hakkımızda
+            </span>
+
+            <h2 className="mt-6 text-4xl md:text-5xl font-serif font-bold text-[#1f332b] leading-tight">
+              Danışan odaklı, sakin ve sürdürülebilir bir terapi yaklaşımı.
             </h2>
           </div>
 
-          <div className="lg:col-span-2">
-            <p className="text-[#5f6f66] text-lg leading-relaxed">
-              Psikolog Merkezi olarak terapi sürecini yalnızca sorunlara çözüm
-              aranan bir alan değil; kişinin kendini tanıdığı, duygularını
-              anlamlandırdığı ve yaşamla daha sağlıklı bağ kurduğu bir yolculuk
-              olarak görüyoruz.
+          <div className="lg:pt-12">
+            <p className="text-xl text-[#5f6f66] leading-relaxed">
+              Terapiyi yalnızca sorunlara çözüm aranan bir alan olarak değil;
+              kişinin kendini duyduğu, duygularını anlamlandırdığı ve yaşamla
+              daha sağlıklı bağ kurduğu bir yolculuk olarak görüyoruz.
             </p>
 
-            <div className="mt-8">
-              <Link
-                href="/hakkimizda"
-                className="inline-flex items-center gap-2 text-[#1f5f4b] font-semibold"
-              >
-                Daha fazla bilgi
-                <ArrowRight size={18} />
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* HİZMETLER */}
-      <section className="bg-[#f7f5ef] py-20">
-        <div className="max-w-7xl mx-auto px-5 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto">
-            <span className="text-[#1f5f4b] font-semibold">Hizmetlerimiz</span>
-            <h2 className="mt-3 text-3xl md:text-4xl font-serif font-bold text-[#1f332b]">
-              İhtiyacınıza uygun psikolojik destek alanları
-            </h2>
-          </div>
-
-          <div className="mt-12 grid md:grid-cols-3 gap-7">
-            {services.map((service) => {
-              const Icon = service.icon;
-
-              return (
-                <div
-                  key={service.title}
-                  className="bg-white rounded-[2rem] p-8 shadow-sm hover:shadow-xl transition border border-[#ebe4d6]"
-                >
-                  <div className="w-14 h-14 rounded-2xl bg-[#e3efe8] flex items-center justify-center mb-6">
-                    <Icon className="text-[#1f5f4b]" size={28} />
-                  </div>
-
-                  <h3 className="text-xl font-serif font-bold text-[#1f332b]">
-                    {service.title}
-                  </h3>
-
-                  <p className="mt-4 text-[#5f6f66] leading-relaxed">
-                    {service.desc}
-                  </p>
+            <div className="mt-10 space-y-5 border-t border-[#1f332b]/10 pt-8">
+              {principles.map((item) => (
+                <div key={item} className="flex items-center gap-4">
+                  <CheckCircle size={22} className="text-[#1f5f4b] shrink-0" />
+                  <p className="text-[#1f332b] font-medium">{item}</p>
                 </div>
-              );
-            })}
-          </div>
+              ))}
+            </div>
 
-          <div className="text-center mt-10">
             <Link
-              href="/hizmetlerimiz"
-              className="inline-flex items-center gap-2 bg-[#1f5f4b] text-white px-7 py-4 rounded-full font-semibold hover:bg-[#174637] transition"
+              href="/hakkimizda"
+              className="mt-10 inline-flex items-center gap-2 text-[#1f5f4b] font-bold"
             >
-              Tüm Hizmetleri Gör
+              Yaklaşımımızı İncele
               <ArrowRight size={18} />
             </Link>
           </div>
         </div>
       </section>
 
-      {/* YAKLAŞIM */}
-      <section className="bg-white py-20">
-        <div className="max-w-7xl mx-auto px-5 lg:px-8 grid lg:grid-cols-2 gap-14 items-center">
-          <div className="rounded-[2.5rem] bg-[#e3efe8] p-10">
-            <div className="bg-white rounded-[2rem] p-8">
-              <h3 className="text-2xl font-serif font-bold text-[#1f332b]">
-                Terapi sürecinde amaç
-              </h3>
+      {/* SERVICES - NO CARDS */}
+      <section className="py-24 lg:py-32 border-b border-[#1f332b]/10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-5 lg:px-8">
+          <div className="max-w-3xl">
+            <span className="text-sm uppercase tracking-[0.3em] text-[#1f5f4b]">
+              Hizmetlerimiz
+            </span>
 
-              <p className="mt-4 text-[#5f6f66] leading-relaxed">
-                Kişinin yaşadığı zorlukları anlamlandırması, duygu ve düşünce
-                kalıplarını fark etmesi, daha sağlıklı baş etme yolları
-                geliştirmesi hedeflenir.
-              </p>
+            <h2 className="mt-6 text-4xl md:text-6xl font-serif font-bold text-[#1f332b] leading-tight">
+              İhtiyacınıza göre şekillenen psikolojik destek alanları.
+            </h2>
+          </div>
+
+          <div className="mt-16 border-t border-[#1f332b]/10">
+            {services.map((service, index) => (
+              <Link
+                href="/hizmetlerimiz"
+                key={service}
+                className="group grid md:grid-cols-[160px_1fr_auto] gap-6 items-center py-8 border-b border-[#1f332b]/10"
+              >
+                <span className="text-[#7a8b7f] font-serif text-2xl">
+                  0{index + 1}
+                </span>
+
+                <h3 className="text-3xl md:text-4xl font-serif font-bold text-[#1f332b] group-hover:text-[#1f5f4b] transition">
+                  {service}
+                </h3>
+
+                <div className="w-12 h-12 rounded-full border border-[#1f332b]/15 flex items-center justify-center group-hover:bg-[#1f332b] group-hover:text-white transition">
+                  <ArrowRight size={18} />
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* APPROACH */}
+      <section className="py-24 lg:py-32 border-b border-[#1f332b]/10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-5 lg:px-8 grid lg:grid-cols-2 gap-16 items-center">
+          <div className="relative">
+            <div className="aspect-[5/4] rounded-[3rem] border border-[#1f332b]/10 bg-[#e3efe8] flex items-center justify-center px-10">
+              <HeartHandshake size={80} className="text-[#1f5f4b]" />
             </div>
+
+            <div className="absolute inset-8 border border-white/70 rounded-[2.5rem]" />
           </div>
 
           <div>
-            <span className="text-[#1f5f4b] font-semibold">Yaklaşımımız</span>
-            <h2 className="mt-3 text-3xl md:text-4xl font-serif font-bold text-[#1f332b]">
-              Her danışan için kişiye özel ve güvenli bir süreç.
+            <span className="text-sm uppercase tracking-[0.3em] text-[#1f5f4b]">
+              Yaklaşım
+            </span>
+
+            <h2 className="mt-6 text-4xl md:text-5xl font-serif font-bold text-[#1f332b] leading-tight">
+              Her görüşme, kişinin kendi ritmine saygı duyan bir süreçtir.
             </h2>
 
-            <p className="mt-6 text-[#5f6f66] text-lg leading-relaxed">
-              Terapi sürecinde danışanın ihtiyaçları, yaşam deneyimleri ve
-              hedefleri dikkate alınır. Yargılayıcı olmayan, güvenli ve etik
-              çerçeve içinde ilerleyen bir destek sunulur.
+            <p className="mt-8 text-lg text-[#5f6f66] leading-relaxed">
+              İlk görüşmeden itibaren danışanın ihtiyaçları, yaşam deneyimleri
+              ve hedefleri dikkate alınır. Süreç; güven, gizlilik ve etik
+              çerçeve içinde ilerler.
             </p>
 
-            <div className="mt-8 grid sm:grid-cols-2 gap-4">
-              <div className="bg-[#f7f5ef] rounded-2xl p-5">
-                <h4 className="font-bold text-[#1f332b]">Gizlilik</h4>
-                <p className="text-sm text-[#5f6f66] mt-2">
-                  Danışan mahremiyeti önceliklidir.
+            <div className="mt-10 grid sm:grid-cols-2 gap-8 border-t border-[#1f332b]/10 pt-8">
+              <div>
+                <ShieldCheck size={28} className="text-[#1f5f4b]" />
+                <h3 className="mt-4 font-serif text-2xl font-bold text-[#1f332b]">
+                  Gizlilik
+                </h3>
+                <p className="mt-3 text-[#5f6f66] leading-relaxed">
+                  Danışan mahremiyeti ve etik sınırlar merkezdedir.
                 </p>
               </div>
 
-              <div className="bg-[#f7f5ef] rounded-2xl p-5">
-                <h4 className="font-bold text-[#1f332b]">Güven</h4>
-                <p className="text-sm text-[#5f6f66] mt-2">
-                  Güvenli bir görüşme alanı sunulur.
+              <div>
+                <MessageCircle size={28} className="text-[#1f5f4b]" />
+                <h3 className="mt-4 font-serif text-2xl font-bold text-[#1f332b]">
+                  Diyalog
+                </h3>
+                <p className="mt-3 text-[#5f6f66] leading-relaxed">
+                  Yargılayıcı olmayan, açık ve güvenli bir iletişim kurulur.
                 </p>
               </div>
             </div>
@@ -230,19 +253,24 @@ export default function HomePage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-[#1f5f4b] py-20">
-        <div className="max-w-4xl mx-auto px-5 text-center">
-          <h2 className="text-3xl md:text-5xl font-serif font-bold text-white">
-            İlk adımı atmak için doğru zamanı beklemek zorunda değilsiniz.
+      <section className="py-24 lg:py-32 bg-[#1f332b]">
+        <div className="max-w-5xl mx-auto px-4 sm:px-5 lg:px-8 text-center">
+          <span className="text-sm uppercase tracking-[0.3em] text-white/50">
+            İlk Adım
+          </span>
+
+          <h2 className="mt-6 text-4xl md:text-6xl font-serif font-bold text-white leading-tight">
+            Kendiniz için güvenli bir başlangıç yapabilirsiniz.
           </h2>
 
-          <p className="mt-5 text-white/80 text-lg">
-            Size uygun görüşme planı için bizimle iletişime geçebilirsiniz.
+          <p className="mt-8 text-lg text-white/65 leading-relaxed max-w-2xl mx-auto">
+            Randevu ve detaylı bilgi için iletişim sayfasından bize
+            ulaşabilirsiniz.
           </p>
 
           <Link
             href="/iletisim"
-            className="mt-8 inline-flex items-center gap-2 bg-white text-[#1f5f4b] px-8 py-4 rounded-full font-bold hover:bg-[#f7f5ef] transition"
+            className="mt-10 inline-flex items-center justify-center gap-2 rounded-full bg-[#f7f5ef] text-[#1f332b] px-8 py-4 font-bold hover:bg-white transition"
           >
             İletişime Geç
             <ArrowRight size={18} />

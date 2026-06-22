@@ -15,7 +15,7 @@ export default function AdminStats({ stats = {}, loading = false }) {
     todayAppointments: stats.todayAppointments ?? 0,
   };
 
-  const cards = [
+  const items = [
     {
       title: "Toplam Blog",
       value: safeStats.totalBlogs,
@@ -49,35 +49,42 @@ export default function AdminStats({ stats = {}, loading = false }) {
   ];
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-5 mb-10">
-      {cards.map((card) => {
-        const Icon = card.icon;
+    <div className="border-t border-[#1f332b]/10">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5">
+        {items.map((item, index) => {
+          const Icon = item.icon;
 
-        return (
-          <div
-            key={card.title}
-            className="bg-white rounded-[2rem] p-5 border border-[#ebe4d6] shadow-sm hover:shadow-lg transition min-w-0"
-          >
-            <div className="flex items-center justify-between gap-4">
-              <div className="min-w-0">
-                <p className="text-sm text-[#7a8b7f]">{card.title}</p>
+          return (
+            <div
+              key={item.title}
+              className="group min-w-0 border-b xl:border-b-0 xl:border-r last:border-r-0 border-[#1f332b]/10 py-7 sm:px-5 xl:px-6"
+            >
+              <div className="flex items-start justify-between gap-5">
+                <span className="font-serif text-3xl text-[#7a8b7f] group-hover:text-[#1f5f4b] transition">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
 
-                <h3 className="mt-2 text-3xl font-serif font-bold text-[#1f332b]">
-                  {loading ? "..." : card.value}
-                </h3>
+                <Icon
+                  size={22}
+                  className="text-[#1f5f4b] shrink-0 opacity-80"
+                />
               </div>
 
-              <div className="w-12 h-12 rounded-2xl bg-[#e3efe8] flex items-center justify-center shrink-0">
-                <Icon className="text-[#1f5f4b]" size={24} />
-              </div>
+              <h3 className="mt-8 text-4xl font-serif font-bold text-[#1f332b] leading-none">
+                {loading ? "..." : item.value}
+              </h3>
+
+              <p className="mt-4 text-sm font-semibold text-[#1f332b]">
+                {item.title}
+              </p>
+
+              <p className="mt-2 text-sm text-[#5f6f66] leading-relaxed break-words">
+                {item.desc}
+              </p>
             </div>
-
-            <p className="mt-4 text-sm text-[#5f6f66] break-words">
-              {card.desc}
-            </p>
-          </div>
-        );
-      })}
+          );
+        })}
+      </div>
     </div>
   );
 }

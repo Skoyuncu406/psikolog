@@ -49,99 +49,138 @@ export default function HizmetlerimizPage() {
     },
   ];
 
+  const process = [
+    "Ön görüşme",
+    "İhtiyaç analizi",
+    "Terapi planı",
+    "Düzenli takip",
+  ];
+
   return (
-    <div className="bg-[#f7f5ef]">
-      <section className="py-10 lg:py-15">
-        <div className="max-w-7xl mx-auto px-5 lg:px-8 text-center">
-          <span className="text-[#1f5f4b] font-semibold">Hizmetlerimiz</span>
+    <div className="bg-[#f7f5ef] overflow-x-hidden">
+      <section className="relative py-24 lg:py-32 border-b border-[#1f332b]/10">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,#d6e7dc,transparent_32%)]" />
 
-          <h1 className="mt-4 text-4xl md:text-6xl font-serif font-bold text-[#1f332b]">
-            İhtiyacınıza uygun psikolojik destek alanları
-          </h1>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-5 lg:px-8">
+          <span className="text-sm uppercase tracking-[0.35em] text-[#1f5f4b]">
+            Hizmetlerimiz
+          </span>
 
-          <p className="mt-6 max-w-3xl mx-auto text-lg text-[#5f6f66] leading-relaxed">
-            Her danışanın ihtiyaçları farklıdır. Bu nedenle terapi süreci
-            danışanın yaşam deneyimi, beklentileri ve hedefleri doğrultusunda
-            kişiye özel olarak planlanır.
-          </p>
+          <div className="mt-8 grid lg:grid-cols-[1.15fr_0.85fr] gap-16 items-end">
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-serif font-bold text-[#1f332b] leading-[1.04] tracking-tight">
+              İhtiyacınıza göre şekillenen psikolojik destek alanları.
+            </h1>
+
+            <p className="text-lg sm:text-xl text-[#5f6f66] leading-relaxed lg:pb-3">
+              Her danışanın ihtiyaçları farklıdır. Bu nedenle terapi süreci
+              danışanın yaşam deneyimi, beklentileri ve hedefleri doğrultusunda
+              kişiye özel olarak planlanır.
+            </p>
+          </div>
         </div>
       </section>
 
-      <section className="pb-20">
-        <div className="max-w-7xl mx-auto px-5 lg:px-8 grid md:grid-cols-2 lg:grid-cols-3 gap-7">
-          {services.map((service) => {
-            const Icon = service.icon;
+      <section className="py-24 lg:py-32 border-b border-[#1f332b]/10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-5 lg:px-8">
+          <div className="border-t border-[#1f332b]/10">
+            {services.map((service, index) => {
+              const Icon = service.icon;
 
-            return (
-              <div
-                key={service.title}
-                className="bg-white rounded-[2rem] p-8 shadow-sm hover:shadow-xl transition border border-[#ebe4d6]"
-              >
-                <div className="w-14 h-14 rounded-2xl bg-[#e3efe8] flex items-center justify-center mb-6">
-                  <Icon className="text-[#1f5f4b]" size={28} />
+              return (
+                <div
+                  key={service.title}
+                  className="group grid lg:grid-cols-[120px_1fr_1.3fr_auto] gap-6 items-start lg:items-center py-10 border-b border-[#1f332b]/10"
+                >
+                  <span className="font-serif text-4xl text-[#7a8b7f] group-hover:text-[#1f5f4b] transition">
+                    0{index + 1}
+                  </span>
+
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-full border border-[#1f332b]/10 flex items-center justify-center shrink-0 group-hover:bg-[#1f332b] group-hover:text-white transition">
+                      <Icon
+                        size={22}
+                        className="text-[#1f5f4b] group-hover:text-white transition"
+                      />
+                    </div>
+
+                    <h2 className="text-3xl md:text-4xl font-serif font-bold text-[#1f332b] group-hover:text-[#1f5f4b] transition">
+                      {service.title}
+                    </h2>
+                  </div>
+
+                  <p className="text-[#5f6f66] text-lg leading-relaxed lg:pt-1">
+                    {service.desc}
+                  </p>
+
+                  <Link
+                    href="/iletisim"
+                    className="w-12 h-12 rounded-full border border-[#1f332b]/15 flex items-center justify-center text-[#1f332b] group-hover:bg-[#1f332b] group-hover:text-white transition"
+                    aria-label={`${service.title} için randevu al`}
+                  >
+                    <ArrowRight size={18} />
+                  </Link>
                 </div>
-
-                <h3 className="text-2xl font-serif font-bold text-[#1f332b]">
-                  {service.title}
-                </h3>
-
-                <p className="mt-4 text-[#5f6f66] leading-relaxed">
-                  {service.desc}
-                </p>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       </section>
 
-      <section className="bg-white py-20">
-        <div className="max-w-7xl mx-auto px-5 lg:px-8 grid lg:grid-cols-2 gap-12 items-center">
+      <section className="py-24 lg:py-32 bg-white border-b border-[#1f332b]/10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-5 lg:px-8 grid lg:grid-cols-[0.8fr_1.2fr] gap-16">
           <div>
-            <span className="text-[#1f5f4b] font-semibold">
+            <span className="text-sm uppercase tracking-[0.3em] text-[#1f5f4b]">
               Süreç Nasıl İlerler?
             </span>
 
-            <h2 className="mt-3 text-3xl md:text-4xl font-serif font-bold text-[#1f332b]">
+            <h2 className="mt-6 text-4xl md:text-5xl font-serif font-bold text-[#1f332b] leading-tight">
               İlk görüşmeden itibaren güvenli ve yapılandırılmış bir süreç.
             </h2>
 
-            <p className="mt-6 text-[#5f6f66] text-lg leading-relaxed">
+            <p className="mt-8 text-lg text-[#5f6f66] leading-relaxed">
               İlk görüşmede danışanın ihtiyaçları, beklentileri ve terapi
               hedefleri değerlendirilir. Sonrasında görüşme sıklığı ve süreç
               planı birlikte belirlenir.
             </p>
           </div>
 
-          <div className="space-y-4">
-            {[
-              "Ön görüşme",
-              "İhtiyaç analizi",
-              "Terapi planı",
-              "Düzenli takip",
-            ].map((item, index) => (
+          <div className="border-t border-[#1f332b]/10">
+            {process.map((item, index) => (
               <div
                 key={item}
-                className="bg-[#f7f5ef] rounded-2xl p-5 flex items-center gap-4"
+                className="grid sm:grid-cols-[90px_1fr] gap-5 py-7 border-b border-[#1f332b]/10"
               >
-                <div className="w-10 h-10 rounded-full bg-[#1f5f4b] text-white flex items-center justify-center font-bold">
-                  {index + 1}
-                </div>
-                <p className="font-semibold text-[#1f332b]">{item}</p>
+                <span className="font-serif text-3xl text-[#7a8b7f]">
+                  0{index + 1}
+                </span>
+
+                <p className="text-2xl font-serif font-bold text-[#1f332b]">
+                  {item}
+                </p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="bg-[#1f5f4b] py-20">
-        <div className="max-w-4xl mx-auto px-5 text-center">
-          <h2 className="text-3xl md:text-5xl font-serif font-bold text-white">
+      <section className="py-24 lg:py-32 bg-[#1f332b]">
+        <div className="max-w-5xl mx-auto px-4 sm:px-5 lg:px-8 text-center">
+          <span className="text-sm uppercase tracking-[0.3em] text-white/50">
+            Randevu
+          </span>
+
+          <h2 className="mt-6 text-4xl md:text-6xl font-serif font-bold text-white leading-tight">
             Size uygun destek alanı için bizimle iletişime geçin.
           </h2>
 
+          <p className="mt-8 text-white/65 text-lg leading-relaxed max-w-2xl mx-auto">
+            Görüşme planı ve terapi süreci hakkında bilgi almak için randevu
+            talebi oluşturabilirsiniz.
+          </p>
+
           <Link
             href="/iletisim"
-            className="mt-8 inline-flex items-center gap-2 bg-white text-[#1f5f4b] px-8 py-4 rounded-full font-bold hover:bg-[#f7f5ef] transition"
+            className="mt-10 inline-flex items-center gap-2 rounded-full bg-[#f7f5ef] text-[#1f332b] px-8 py-4 font-bold hover:bg-white transition"
           >
             Randevu Al
             <ArrowRight size={18} />

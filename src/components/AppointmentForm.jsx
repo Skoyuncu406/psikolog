@@ -30,28 +30,38 @@ export default function AppointmentForm() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const bookedTimes = appointments
-    .filter(
-      (item) =>
-        item.appointmentDate === form.appointmentDate &&
-        item.status !== "İptal Edildi"
-    )
-    .map((item) => item.appointmentTime);
+  const normalizeAppointments = (data) => {
+    if (Array.isArray(data)) return data;
+    if (Array.isArray(data?.appointments)) return data.appointments;
+    if (Array.isArray(data?.data)) return data.data;
+    return [];
+  };
+
+  const bookedTimes = Array.isArray(appointments)
+    ? appointments
+        .filter(
+          (item) =>
+            item.appointmentDate === form.appointmentDate &&
+            item.status !== "İptal Edildi"
+        )
+        .map((item) => item.appointmentTime)
+    : [];
+
+  const fetchAppointments = async () => {
+    try {
+      const res = await fetch("/api/appointments", {
+        cache: "no-store",
+      });
+
+      const data = await res.json();
+      setAppointments(normalizeAppointments(data));
+    } catch (error) {
+      console.error("Randevular alınamadı:", error);
+      setAppointments([]);
+    }
+  };
 
   useEffect(() => {
-    const fetchAppointments = async () => {
-      try {
-        const res = await fetch("/api/appointments", {
-          cache: "no-store",
-        });
-
-        const data = await res.json();
-        setAppointments(data);
-      } catch (error) {
-        console.error("Randevular alınamadı:", error);
-      }
-    };
-
     fetchAppointments();
   }, []);
 
@@ -59,16 +69,16 @@ export default function AppointmentForm() {
     const { name, value } = e.target;
 
     if (name === "appointmentDate") {
-      setForm({
-        ...form,
+      setForm((prev) => ({
+        ...prev,
         appointmentDate: value,
         appointmentTime: "",
-      });
+      }));
     } else {
-      setForm({
-        ...form,
+      setForm((prev) => ({
+        ...prev,
         [name]: value,
-      });
+      }));
     }
 
     setMessage("");
@@ -79,11 +89,11 @@ export default function AppointmentForm() {
     e.preventDefault();
 
     if (
-      !form.name ||
-      !form.phone ||
+      !form.name.trim() ||
+      !form.phone.trim() ||
       !form.appointmentDate ||
       !form.appointmentTime ||
-      !form.note
+      !form.note.trim()
     ) {
       setError("Lütfen tüm alanları doldurun.");
       return;
@@ -122,30 +132,21 @@ export default function AppointmentForm() {
         note: "",
       });
 
-      const refreshed = await fetch("/api/appointments", {
-        cache: "no-store",
-      });
-
-      const refreshedData = await refreshed.json();
-      setAppointments(refreshedData);
+      await fetchAppointments();
     } catch (error) {
+      console.error(error);
       setError("Sunucu hatası oluştu.");
     } finally {
       setLoading(false);
     }
   };
 
+  const inputClass =
+    "w-full min-w-0 py-5 bg-transparent border-0 border-b border-[#1f332b]/15 outline-none focus:border-[#1f5f4b] text-[#1f332b] placeholder:text-[#7a8b7f] transition";
+
   return (
-    <div className="bg-white rounded-[2rem] p-5 sm:p-8 shadow-sm border border-[#ebe4d6] min-w-0">
-      <h2 className="text-3xl font-serif font-bold text-[#1f332b]">
-        Randevu Talebi Oluştur
-      </h2>
-
-      <p className="text-[#5f6f66] mt-2 mb-8">
-        Uygun tarih ve saati seçerek ön randevu talebi oluşturabilirsiniz.
-      </p>
-
-      <form onSubmit={handleSubmit} className="space-y-5">
+    <div className="border-t border-[#1f332b]/10 pt-10 min-w-0">
+      <form onSubmit={handleSubmit} className="space-y-0">
         <input
           required
           type="text"
@@ -153,7 +154,7 @@ export default function AppointmentForm() {
           value={form.name}
           onChange={handleChange}
           placeholder="İsim Soyisim"
-          className="w-full px-4 py-4 rounded-2xl border border-[#d8d1bf] outline-none focus:border-[#1f5f4b] bg-[#f7f5ef]"
+          className={inputClass}
         />
 
         <input
@@ -163,14 +164,14 @@ export default function AppointmentForm() {
           value={form.phone}
           onChange={handleChange}
           placeholder="Telefon Numarası"
-          className="w-full px-4 py-4 rounded-2xl border border-[#d8d1bf] outline-none focus:border-[#1f5f4b] bg-[#f7f5ef]"
+          className={inputClass}
         />
 
-        <div className="grid sm:grid-cols-2 gap-4">
-          <div className="relative">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div className="relative min-w-0">
             <CalendarDays
               size={19}
-              className="absolute left-4 top-1/2 -translate-y-1/2 text-[#7a8b7f]"
+              className="absolute left-0 top-1/2 -translate-y-1/2 text-[#7a8b7f]"
             />
 
             <input
@@ -180,14 +181,14 @@ export default function AppointmentForm() {
               min={today}
               value={form.appointmentDate}
               onChange={handleChange}
-              className="w-fit lg:w-full  pl-12 pr-4 py-4 rounded-2xl border border-[#d8d1bf] outline-none focus:border-[#1f5f4b] bg-[#f7f5ef]"
+              className="w-full min-w-0 pl-8 py-5 bg-transparent border-0 border-b border-[#1f332b]/15 outline-none focus:border-[#1f5f4b] text-[#1f332b] transition"
             />
           </div>
 
-          <div className="relative">
+          <div className="relative min-w-0">
             <Clock
               size={19}
-              className="absolute left-4 top-1/2 -translate-y-1/2 text-[#7a8b7f]"
+              className="absolute left-0 top-1/2 -translate-y-1/2 text-[#7a8b7f]"
             />
 
             <select
@@ -196,7 +197,7 @@ export default function AppointmentForm() {
               value={form.appointmentTime}
               onChange={handleChange}
               disabled={!form.appointmentDate}
-              className="w-full pl-12 pr-4 py-4 rounded-2xl border border-[#d8d1bf] outline-none focus:border-[#1f5f4b] bg-[#f7f5ef] disabled:opacity-60"
+              className="w-full min-w-0 pl-8 py-5 bg-transparent border-0 border-b border-[#1f332b]/15 outline-none focus:border-[#1f5f4b] text-[#1f332b] disabled:opacity-60 transition"
             >
               <option value="">
                 {form.appointmentDate ? "Saat Seçin" : "Önce tarih seçin"}
@@ -216,7 +217,7 @@ export default function AppointmentForm() {
         </div>
 
         {form.appointmentDate && bookedTimes.length > 0 && (
-          <div className="bg-yellow-50 text-yellow-700 px-4 py-3 rounded-xl text-sm">
+          <div className="mt-6 bg-yellow-50 text-yellow-700 px-4 py-3 rounded-xl text-sm">
             Bu tarihte dolu saatler: {bookedTimes.join(", ")}
           </div>
         )}
@@ -228,17 +229,17 @@ export default function AppointmentForm() {
           onChange={handleChange}
           placeholder="Kısaca görüşme sebebinizi yazın"
           rows="5"
-          className="w-full px-4 py-4 rounded-2xl border border-[#d8d1bf] outline-none focus:border-[#1f5f4b] bg-[#f7f5ef] resize-none"
+          className={`${inputClass} resize-none`}
         />
 
         {error && (
-          <p className="bg-red-50 text-red-600 px-4 py-3 rounded-xl text-sm">
+          <p className="mt-6 bg-red-50 text-red-600 px-4 py-3 rounded-xl text-sm">
             {error}
           </p>
         )}
 
         {message && (
-          <p className="bg-green-50 text-green-700 px-4 py-3 rounded-xl text-sm">
+          <p className="mt-6 bg-green-50 text-green-700 px-4 py-3 rounded-xl text-sm">
             {message}
           </p>
         )}
@@ -246,7 +247,7 @@ export default function AppointmentForm() {
         <button
           disabled={loading}
           type="submit"
-          className="w-full inline-flex items-center justify-center gap-2 bg-[#1f5f4b] text-white px-7 py-4 rounded-full font-bold hover:bg-[#174637] transition disabled:opacity-60"
+          className="mt-8 w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-[#1f332b] text-white px-8 py-4 font-bold hover:bg-[#1f5f4b] transition disabled:opacity-60"
         >
           <Send size={18} />
           {loading ? "Gönderiliyor..." : "Randevu Talebi Gönder"}

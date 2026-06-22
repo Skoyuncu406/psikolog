@@ -1,11 +1,24 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { CheckCircle, Mail, Phone, Trash2 } from "lucide-react";
+import {
+  CheckCircle,
+  Mail,
+  Phone,
+  Trash2,
+  Circle,
+} from "lucide-react";
 
 export default function AdminMessages({ onStatsChange }) {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const normalizeMessages = (data) => {
+    if (Array.isArray(data)) return data;
+    if (Array.isArray(data?.messages)) return data.messages;
+    if (Array.isArray(data?.data)) return data.data;
+    return [];
+  };
 
   const fetchMessages = async () => {
     try {
@@ -14,9 +27,10 @@ export default function AdminMessages({ onStatsChange }) {
       });
 
       const data = await res.json();
-      setMessages(data);
+      setMessages(normalizeMessages(data));
     } catch (error) {
       console.error("Mesajlar alınamadı:", error);
+      setMessages([]);
     } finally {
       setLoading(false);
     }
@@ -26,119 +40,164 @@ export default function AdminMessages({ onStatsChange }) {
     fetchMessages();
   }, []);
 
-const markAsRead = async (id) => {
-  await fetch(`/api/messages/${id}`, {
-    method: "PATCH",
-  });
+  const markAsRead = async (id) => {
+    await fetch(`/api/messages/${id}`, {
+      method: "PATCH",
+    });
 
-  fetchMessages();
-  onStatsChange?.();
-};
+    fetchMessages();
+    onStatsChange?.();
+  };
 
-const deleteMessage = async (id) => {
-  const confirmDelete = confirm("Bu mesajı silmek istediğinize emin misiniz?");
+  const deleteMessage = async (id) => {
+    const confirmDelete = confirm("Bu mesajı silmek istediğinize emin misiniz?");
 
-  if (!confirmDelete) return;
+    if (!confirmDelete) return;
 
-  await fetch(`/api/messages/${id}`, {
-    method: "DELETE",
-  });
+    await fetch(`/api/messages/${id}`, {
+      method: "DELETE",
+    });
 
-  fetchMessages();
-  onStatsChange?.();
-};
+    fetchMessages();
+    onStatsChange?.();
+  };
+
+  const getStatusClass = (isRead) => {
+    if (isRead) {
+      return "bg-green-50 text-green-700 border-green-200";
+    }
+
+    return "bg-yellow-50 text-yellow-700 border-yellow-200";
+  };
 
   if (loading) {
     return (
-      <div className="bg-white rounded-[2rem] p-8 border border-[#ebe4d6]">
+      <div className="border-t border-[#1f332b]/10 pt-8">
         <p className="text-[#1f5f4b] font-semibold">Mesajlar yükleniyor...</p>
       </div>
     );
   }
 
   return (
-    <div className="bg-white rounded-[2rem] p-8 shadow-sm border border-[#ebe4d6]">
-      <div className="flex items-center gap-3 mb-6">
-        <div className="w-12 h-12 bg-[#e3efe8] rounded-2xl flex items-center justify-center">
-          <Mail className="text-[#1f5f4b]" size={24} />
-        </div>
-
+    <div className="min-w-0">
+      <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-10">
         <div>
-          <h2 className="text-2xl font-serif font-bold text-[#1f332b]">
-            Gelen Mesajlar
+          <span className="text-sm uppercase tracking-[0.3em] text-[#1f5f4b]">
+            Mesaj Yönetimi
+          </span>
+
+          <h2 className="mt-5 text-4xl md:text-5xl font-serif font-bold text-[#1f332b] leading-tight">
+            İletişim formundan gelen talepler.
           </h2>
-          <p className="text-sm text-[#5f6f66]">
-            Toplam {messages.length} mesaj
+
+          <p className="mt-4 text-[#5f6f66] text-lg leading-relaxed">
+            Toplam {messages.length} mesaj bulunuyor.
           </p>
         </div>
       </div>
 
-      <div className="space-y-4 max-h-[720px] overflow-y-auto pr-2">
-        {messages.length > 0 ? (
-          messages.map((item) => (
+      {messages.length > 0 ? (
+        <div className="border-t border-[#1f332b]/10">
+          {messages.map((item, index) => (
             <div
               key={item._id}
-              className={`rounded-2xl p-5 border ${
-                item.isRead
-                  ? "bg-[#f7f5ef] border-[#ebe4d6]"
-                  : "bg-[#e3efe8] border-[#1f5f4b]"
-              }`}
+              className="group grid grid-cols-1 xl:grid-cols-[80px_1fr_0.8fr_1.3fr_auto] gap-6 items-start py-8 border-b border-[#1f332b]/10"
             >
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <h3 className="font-bold text-[#1f332b]">{item.name}</h3>
+              <span className="font-serif text-3xl text-[#7a8b7f] group-hover:text-[#1f5f4b] transition">
+                {String(index + 1).padStart(2, "0")}
+              </span>
 
-                  <a
-                    href={`tel:${item.phone}`}
-                    className="mt-1 inline-flex items-center gap-2 text-sm text-[#1f5f4b] font-semibold"
-                  >
-                    <Phone size={15} />
-                    {item.phone}
-                  </a>
+              <div className="min-w-0">
+                <div className="flex items-start gap-3">
+                  {item.isRead ? (
+                    <CheckCircle
+                      size={20}
+                      className="text-green-600 shrink-0 mt-1"
+                    />
+                  ) : (
+                    <Circle
+                      size={20}
+                      className="text-yellow-600 shrink-0 mt-1"
+                    />
+                  )}
 
-                  <p className="mt-3 text-sm text-[#7a8b7f]">{item.date}</p>
+                  <div className="min-w-0">
+                    <h3 className="text-2xl font-serif font-bold text-[#1f332b] break-words group-hover:text-[#1f5f4b] transition">
+                      {item.name}
+                    </h3>
+
+                    <p className="mt-2 text-sm text-[#7a8b7f]">
+                      {item.date}
+                    </p>
+                  </div>
                 </div>
 
-                {!item.isRead && (
-                  <span className="bg-[#1f5f4b] text-white text-xs px-3 py-1 rounded-full">
-                    Yeni
-                  </span>
-                )}
+                <a
+                  href={`tel:${item.phone}`}
+                  className="mt-4 inline-flex items-center gap-2 text-sm text-[#1f5f4b] font-semibold break-all"
+                >
+                  <Phone size={15} />
+                  {item.phone}
+                </a>
               </div>
 
-              <div className="mt-4">
-                <p className="font-semibold text-[#1f332b]">{item.subject}</p>
+              <div className="space-y-3">
+                <span
+                  className={`inline-flex border text-xs px-3 py-1 rounded-full font-semibold ${getStatusClass(
+                    item.isRead
+                  )}`}
+                >
+                  {item.isRead ? "Okundu" : "Yeni Mesaj"}
+                </span>
 
-                <p className="mt-2 text-[#5f6f66] leading-relaxed whitespace-pre-line">
+                <div>
+                  <p className="text-xs uppercase tracking-[0.25em] text-[#7a8b7f]">
+                    Konu
+                  </p>
+
+                  <p className="mt-2 font-semibold text-[#1f332b] break-words">
+                    {item.subject}
+                  </p>
+                </div>
+              </div>
+
+              <div className="min-w-0">
+                <p className="text-xs uppercase tracking-[0.25em] text-[#7a8b7f]">
+                  Mesaj
+                </p>
+
+                <p className="mt-3 text-[#5f6f66] leading-relaxed whitespace-pre-line break-words">
                   {item.message}
                 </p>
               </div>
 
-              <div className="flex flex-wrap gap-2 mt-5">
+              <div className="flex xl:flex-col flex-wrap gap-3 xl:items-start">
                 {!item.isRead && (
                   <button
                     onClick={() => markAsRead(item._id)}
-                    className="inline-flex items-center gap-1 text-sm bg-[#1f5f4b] text-white px-3 py-2 rounded-full"
+                    className="inline-flex items-center gap-2 text-sm text-[#1f5f4b] font-semibold hover:text-[#1f332b] transition"
                   >
                     <CheckCircle size={15} />
-                    Okundu
+                    Okundu Yap
                   </button>
                 )}
 
                 <button
                   onClick={() => deleteMessage(item._id)}
-                  className="inline-flex items-center gap-1 text-sm bg-red-600 text-white px-3 py-2 rounded-full"
+                  className="inline-flex items-center gap-2 text-sm text-red-600 font-semibold hover:text-red-800 transition"
                 >
                   <Trash2 size={15} />
                   Sil
                 </button>
               </div>
             </div>
-          ))
-        ) : (
+          ))}
+        </div>
+      ) : (
+        <div className="py-10 border-y border-[#1f332b]/10">
           <p className="text-[#5f6f66]">Henüz mesaj yok.</p>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }
